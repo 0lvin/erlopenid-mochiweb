@@ -1,13 +1,25 @@
-#summary Introduction
+Модуль предоставляет 3 функции:
 
-= Introduction =
+Функция getRedirect(OpenIdUrl,YourServer,ReturnYourServer) возвращает url на который нужно перенаправить пользователя для аунтификации по OpenID.
 
-Add your content here.
+* OpenIdUrl - идентификатор пользователя,
 
+* YourServer - ваш домен, для которого производится проверка,
 
-= Details =
+* ReturnYourServer - путь не который отправить пользователя после проверки
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+getResultRedirect(ResultdedUrl) - разбор параметров возврата.
+
+Это в большей мере служебная форма, нужна для того чтобы диагностировать проблемы с модулем.
+
+* ResultdedUrl - путь на который сервер аунтификации отправил пользователя(совпадает до знака вопроса с путем указаным при формировании перенаправления).
+
+getResultRedirectParsed(ResultdedUrl) - разбор параметров возврата.
+
+* ResultdedUrl - путь на который сервер аунтификации отправил пользователя(совпадает до знака вопроса с путем указаным при формировании перенаправления).
+
+Возвращает результат проверки с указанием служебной информации.
+
+*{true, _ } - удачная аунтификация.
+
+*{false, _ } - неудачная аунтификация.
