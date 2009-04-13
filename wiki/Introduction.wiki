@@ -6,7 +6,7 @@ getRedirect(OpenIdUrl,YourServer,ReturnYourServer) - return url for redirect cli
  # YourServer - your domain,
  # ReturnYourServer - path for return client from server after authentication(this path will be used to return).
 
-getResultRedirect(ResultdedUrl) - parse returned from server result(mainly testing function). Returned only parsed result, but not check result authentication. 
+getResultRedirect(ResultdedUrl) - parse returned result from server (mainly testing function). Return only parsed result, but not check result authentication. 
 
  # ResultdedUrl - path where server return client(redirect).
 
