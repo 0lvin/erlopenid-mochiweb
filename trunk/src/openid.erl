@@ -17,13 +17,19 @@
 %%   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.            %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 -module(openid).
--export([getRedirect/3]).
--export([getResultRedirect/1]).
--export([getResultRedirectParsed/1]).
+-export([	getRedirect/3,
+			getResultRedirect/1,
+			getResultRedirectParsed/1]).
 
 %%Получение урл на который нужно отправить пользователя для проверки его опенид
 %%Параметры проверяемый опенид, доверие которому проверяеться, на какой урл вернуться
 %%Возвращает урл
+%%-------
+%%return url for redirect client to server authentication.
+%%  OpenIdUrl - client openId,
+%%  YourServer - your domain(example: http://test.com),
+%%  ReturnYourServer - path for return client from server after 
+%%     authentication(this path will be used to return). Example: http://test.com/testme/
 getRedirect(OpenIdUrl,YourServer,ReturnYourServer) ->
 	case http:request(OpenIdUrl) of
 		{ok,{_,_,Body}} ->
@@ -45,12 +51,18 @@ getRedirectLink(Body,YourServer,OpenIdUrl,ReturnYourServer) ->
 	list_to_binary(URL).
 
 %%Разбивает результирующий запрос на непосредственно имя сервера и параметры ответа {Server,[{p,a},{p,b}]}
+%%-------
+%% parse returned result from server (mainly testing function). 
+%% Return only parsed result, but not check result authentication. (example: {Server,[{p,a},{p,b}]})
+%% ResultdedUrl - path where server return client(redirect).  Example: http://test.com/testme/?openid.mode=cancel
 getResultRedirect(ResultdedUrl) ->
 	{ReturnYourServer,Params,_} = mochiweb_util:urlsplit_path(ResultdedUrl),
 	ParsedQuery=mochiweb_util:parse_qs(Params),
 	{ReturnYourServer,ParsedQuery}.
 
 %%Веруть значение тага Select
+%%----
+%% getValue element from tuple 'Head' with Tag == Select
 genValueSelect(Head,Select) ->
 	{Tag , Value} = Head,
 	if 
@@ -61,14 +73,24 @@ genValueSelect(Head,Select) ->
 	end.
 
 %%Веруть значение тага Select
+%% getValue element from tuple 'Head' with Tag == Select
 genValueByTag([Head],Select) ->
 	genValueSelect(Head,Select);
 
 %%Веруть значение тага Select
+%% getValue element from list with Tag == Select
 genValueByTag([Head | Rest],Select) ->
 	genValueSelect(Head,Select) ++ genValueByTag(Rest,Select).
 
-%%Получение результата прверки {true,{Имя сервера, идентификатор пользователя, кто проверил}};
+%%Получение результата проверки {true,{Имя сервера, идентификатор пользователя, кто проверил}};
+%%-------
+%%parse returned from server result. 
+%% ResultdedUrl -  path where server return client(redirect).  
+%%  Example: http://test.com/testme/?openid.mode=cancel
+%%
+%%Function can return 2 variants tuple:
+%% {true, _ } - successful authentication.
+%% {false, _ } - badly authentication.
 getResultRedirectParsed(ResultdedUrl) ->
 	{ReturnYourServer,ParsedQuery} = getResultRedirect(ResultdedUrl),
 	Mode = genValueByTag(ParsedQuery, "openid.mode"),
