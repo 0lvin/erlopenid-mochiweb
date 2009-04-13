@@ -61,26 +61,14 @@ getResultRedirect(ResultdedUrl) ->
 	{ReturnYourServer,ParsedQuery}.
 
 %%Веруть значение тага Select
-%%----
-%% getValue element from tuple 'Head' with Tag == Select
-genValueSelect(Head,Select) ->
-	{Tag , Value} = Head,
-	if 
-		Tag == Select ->
-			Value;
-		true ->
-			""
-	end.
-
-%%Веруть значение тага Select
-%% getValue element from tuple 'Head' with Tag == Select
-genValueByTag([Head],Select) ->
-	genValueSelect(Head,Select);
-
-%%Веруть значение тага Select
 %% getValue element from list with Tag == Select
-genValueByTag([Head | Rest],Select) ->
-	genValueSelect(Head,Select) ++ genValueByTag(Rest,Select).
+genValueByTag(ListTags,Select) ->
+	case lists:keysearch(Select, 1, ListTags) of
+	{value,{Select,Value}} ->
+		Value;
+	_ ->
+		""
+	end.
 
 %%Получение результата проверки {true,{Имя сервера, идентификатор пользователя, кто проверил}};
 %%-------
