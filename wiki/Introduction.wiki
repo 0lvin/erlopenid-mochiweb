@@ -1,4 +1,5 @@
 Module contains 3 functions:
+
 getRedirect(OpenIdUrl,YourServer,ReturnYourServer) - return url for redirect client to server authentication. 
 
  # OpenIdUrl - client openId,
