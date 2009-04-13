@@ -1,3 +1,8 @@
+Warning:
+
+ # Have only initial support OpenId 2.0
+ # Not check signature of fields (openid.signed,openid.sig) from response
+
 Module contains 3 functions:
 
 getRedirect(OpenIdUrl,YourServer,ReturnYourServer) - return url for redirect client to server authentication. 
