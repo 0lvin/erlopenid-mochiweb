@@ -39,6 +39,7 @@ getRedirect(OpenIdUrl,YourServer,ReturnYourServer) ->
 	end.
 
 %%внутренняя функция формирования из ответа сервера аунтификации запроса на проверку
+%%inner function - parse response from server
 getRedirectLink(Body,YourServer,OpenIdUrl,ReturnYourServer) ->
 	Tree = mochiweb_html:parse(Body),
 	[ServerName]=mochiweb_xpath:execute("//link[@rel='openid.server']/@href",Tree),
