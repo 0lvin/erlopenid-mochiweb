@@ -3,6 +3,8 @@ Warning:
  # Have only initial support OpenId 2.0
  # Not check signature of fields (openid.signed,openid.sig) from response
 
+For using needed mochiweb_util (from http://code.google.com/p/mochiweb/) and mochiweb_xpath(from http://groups.google.com/group/mochiweb). Before using please start inets(inets:start()).
+
 Module contains 3 functions:
 
 getRedirect(OpenIdUrl,YourServer,ReturnYourServer) - return url for redirect client to server authentication. 
